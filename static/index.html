@@ -1,0 +1,93 @@
+<html>
+    <head>
+        <title>Online CodeWriter</title>
+	<script language="javascript" type="text/javascript" src="edit_area/edit_area_full.js"></script>
+	<script src="bcsocket.js"></script>        
+        <script src="webclient/share.js"></script>   
+        <script src="webclient/textarea.js"></script>
+
+	<style>
+	
+	.header {
+		height: 70px;
+		background-color: #39A0C5;
+		overflow-y: hidden;
+	}
+
+	.alert-container {
+		height: 38px;
+	}	
+	
+	body {
+		display: block;
+		margin: 0px;
+	}
+
+	.codewriter {
+	
+		padding: 8px 20px 12px ;
+		color: #ffffff ;
+		font-size: 20px;
+		font-weight: 900;
+	}
+	
+	</style>
+    </head>
+    <body>
+
+	<div class="header" align="center">
+	<br/>
+	<span class="codewriter">CodeWriter- multi-site realtime concurrency.</span>
+	</div>
+
+	<div class="alert-container"></div>
+	
+	<div id="main-container" align="center">
+        <textarea id='texteditor' style="width: 900px ; height: 600px;"></textarea>
+
+	</div>
+
+	<div id=footer>
+	
+	</div>
+	
+	<script type="text/javascript">
+
+var callback = function() {
+	
+	frameelement = document.getElementById("frame_texteditor");
+
+	function getFrameElementId(frameRef) {
+	    return frameRef.contentWindow ? frameRef.contentWindow.document : frameRef.contentDocument
+	}
+
+	var temp = getFrameElementId( frameelement)
+	var elem = temp.getElementById("textarea");
+
+	var connection = sharejs.open('test', 'text', function(error, doc) {
+		// this function is called once the connection is opened
+		if (error) {
+			console.log("ERROR:", error);
+		} else {
+			doc.attach_textarea(elem);
+		}
+	});
+};
+
+
+</script>
+
+	<script>
+		editAreaLoader.init({
+	id : "texteditor"		// textarea id
+	,syntax: "css"			// syntax to be uses for highgliting
+	,start_highlight: true
+	,syntax_selection_allow: "css,html,js,php,python,vb,xml,c,cpp,sql,basic,pas,brainfuck"
+	,toolbar: "undo, redo, |, select_font, |, syntax_selection,"
+	,allow_toggle: false
+	,EA_load_callback: "callback"		// to display with highlight mode on start-up
+});
+
+	 </script>
+    </body>
+</html>
